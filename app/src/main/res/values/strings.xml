@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App -->
+    <string name="app_name">Ledgerly</string>
+
+    <!-- Auth -->
+    <string name="add_email">Add Email Address</string>
+    <string name="add_password">Add Password</string>
+    <string name="back">Back</string>
+    <string name="loginpage">LOGIN PAGE</string>
+    <string name="registrationpage">REGISTRATION PAGE</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+
+    <!-- Welcome / Home -->
+    <string name="welcome">WELCOME</string>
+    <string name="easy_ledgerly">EASY LEDGERLY</string>
+    <string name="enter_username">Enter Username</string>
+    <string name="move_to_ledgerly">Move To Ledgerly</string>
+
+    <!-- Ledger Manager -->
+    <string name="ledgerly_manager">LEDGERLY MANAGER</string>
+    <string name="enter_customer_name">Enter Customer Name</string>
+    <string name="add">ADD</string>
+    <string name="delete">DELETE</string>
+    <string name="send">SEND</string>
+    <string name="receive">RECEIVE</string>
+    <string name="add_customer">ADD CUSTOMER</string>
+    <string name="enter_name">Enter Name</string>
+    <string name="enter_amount">Enter Amount</string>
+    <string name="enter_phone">Enter Phone</string>
+    <string name="unknown_user">Unknown User</string>
+
+
+    <!-- Reports -->
+    <string name="generate_pdf">Generate PDF</string>
+    <string name="send_report">Send Report</string>
+    <string name="request">Request</string>
+
+    <!-- Dialogs -->
+    <string name="update_delete_dialog">Update And Delete Dialog</string>
+    <string name="update">UPDATE</string>
+
+    <!-- Currency -->
+    <string-array name="currency_options">
+        <item>Rupees</item>
+        <item>Dollar</item>
+        <item>Riyal</item>
+        <item>Yen</item>
+    </string-array>
+</resources>

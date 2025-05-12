@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base light theme -->
+    <style name="Base.Theme.Ledgerly" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Ledgerly brand -->
+        <item name="colorPrimary">@color/ledgerly_primary</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/ledgerly_secondary</item>
+        <item name="colorOnSecondary">@color/white</item>
+
+        <!-- Surfaces & backgrounds -->
+        <item name="android:colorBackground">@color/ledgerly_tertiary</item>
+        <item name="colorSurface">@color/ledgerly_accent</item>
+        <item name="colorOnBackground">@color/black</item>
+    </style>
+
+    <style name="Theme.Ledgerly" parent="Base.Theme.Ledgerly" />
+</resources>

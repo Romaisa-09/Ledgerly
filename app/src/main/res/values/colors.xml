@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Ledgerly palette -->
+    <color name="ledgerly_primary">#A96551</color>
+    <color name="ledgerly_secondary">#84C077</color>
+    <color name="ledgerly_tertiary">#69A65B</color>
+    <color name="ledgerly_accent">#AFC6E8</color>
+
+    <!-- Utility colors -->
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="background_user_name_display">#454545</color>
+</resources>
