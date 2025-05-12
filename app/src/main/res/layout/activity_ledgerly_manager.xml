@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app   ="http://schemas.android.com/apk/res-auto"
+    xmlns:tools ="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/ledgerly_accent"
+    tools:context=".LedgerlyManager">
+
+    <!-- Back button -->
+    <Button
+        android:id="@+id/btnBackLedgerlyManager"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="@string/back"
+        android:textColor="@color/ledgerly_primary"
+        android:textSize="20sp" />
+
+    <!-- Header card -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        app:cardBackgroundColor="@color/ledgerly_tertiary"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="12dp">
+
+        <TextView
+            android:id="@+id/textViewLedgerlyManager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="20dp"
+            android:text="@string/ledgerly_manager"
+            android:textColor="@color/white"
+            android:textSize="30sp"
+            android:textStyle="bold|italic" />
+    </androidx.cardview.widget.CardView>
+
+    <!-- Add customer -->
+    <Button
+        android:id="@+id/btnAddCustomer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/add_customer"
+        android:backgroundTint="@color/ledgerly_primary"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
+
+    <!-- Ledger list -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvLedger"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_margin="5dp" />
+
+</LinearLayout>
