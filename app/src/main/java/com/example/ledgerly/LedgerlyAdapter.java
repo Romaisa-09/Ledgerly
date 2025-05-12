@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class LedgerlyAdapter extends RecyclerView.Adapter<LedgerlyAdapter.ViewHolder> {
 
@@ -28,17 +29,14 @@ public class LedgerlyAdapter extends RecyclerView.Adapter<LedgerlyAdapter.ViewHo
     private final Context context;
     private final String selectedCurrency;
     private final ItemSelected parentActivity;
-    private final int customerId;
 
     public LedgerlyAdapter(Context context,
                            ArrayList<Customer> list,
-                           SharedPreferences prefs,
-                           int customerId) {
+                           SharedPreferences prefs) {
         this.context = context;
         this.customers = list;
         this.selectedCurrency = prefs.getString("selected_currency", "Rupees");
         this.parentActivity = (ItemSelected) context;
-        this.customerId = customerId;
     }
 
     @NonNull
@@ -54,7 +52,6 @@ public class LedgerlyAdapter extends RecyclerView.Adapter<LedgerlyAdapter.ViewHo
         Customer c = customers.get(pos);
         holder.itemView.setTag(c);
 
-        // Determine color & button text
         boolean positive = c.getRemainingAmount() >= 0;
         int color = positive
                 ? context.getColor(R.color.ledgerly_primary)
@@ -64,7 +61,6 @@ public class LedgerlyAdapter extends RecyclerView.Adapter<LedgerlyAdapter.ViewHo
                 ? context.getString(R.string.request)
                 : context.getString(R.string.send));
 
-        // Display fields
         holder.tvName.setText(c.getName());
         holder.tvDate.setText(c.getDate());
         holder.tvTime.setText(c.getTime());
@@ -79,60 +75,62 @@ public class LedgerlyAdapter extends RecyclerView.Adapter<LedgerlyAdapter.ViewHo
     private String formatAmount(double amt) {
         switch (selectedCurrency) {
             case "Dollar":
-                return "$ " + String.format("%.2f", amt / 278.05);
+                return String.format(Locale.US, "$ %.2f", amt / 278.05);
             case "Riyal":
-                return "SAR " + String.format("%.2f", amt / 74.13);
+                return String.format(Locale.US, "SAR %.2f", amt / 74.13);
             case "Yen":
-                return "¥ " + String.format("%.2f", amt / 1.82);
+                return String.format(Locale.US, "¥ %.2f", amt / 1.82);
             default:
-                return "PKR " + String.format("%.2f", amt);
+                return String.format(Locale.US, "PKR %.2f", amt);
         }
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvName, tvDate, tvTime, tvRemaining;
         Button btnAction;
 
-        ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvName      = itemView.findViewById(R.id.tvName);
             tvDate      = itemView.findViewById(R.id.tvDate);
             tvTime      = itemView.findViewById(R.id.tvTime);
             tvRemaining = itemView.findViewById(R.id.tvRemainingAmount);
             btnAction   = itemView.findViewById(R.id.btnSendReceiveCustomer);
-
-            btnAction.setOnClickListener(v -> {
-                int pos = getAdapterPosition();
-                Customer c = customers.get(pos);
-                if (c.getRemainingAmount() >= 0) {
-                    String phone = c.getPhoneNumber();
-                    Intent sms = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + phone));
-                    sms.putExtra("sms_body", "You owe: " + c.getRemainingAmount() + " PKR");
-                    context.startActivity(sms);
-                } else {
-                    Intent jazz = context.getPackageManager()
-                            .getLaunchIntentForPackage("com.techlogix.mobilinkcustomer");
-                    if (jazz != null) context.startActivity(jazz);
-                    else new AlertDialog.Builder(context)
-                            .setTitle("JazzCash Not Installed")
-                            .setMessage("Please install JazzCash to proceed.")
-                            .setPositiveButton("OK", null)
-                            .show();
-                }
-            });
-
-            itemView.setOnClickListener(v ->
-                    parentActivity.onItemClicked(getAdapterPosition()));
-
-            itemView.setOnLongClickListener(v -> {
-                int pos = getAdapterPosition();
-                if (pos != RecyclerView.NO_POSITION) {
-                    showUpdateDeleteDialog(customers.get(pos), pos);
-                    return true;
-                }
-                return false;
-            });
         }
+    }
+
+    @Override
+    public void onViewAttachedToWindow(@NonNull ViewHolder holder) {
+        super.onViewAttachedToWindow(holder);
+        int pos = holder.getAdapterPosition();
+        Customer c = customers.get(pos);
+
+        holder.btnAction.setOnClickListener(v -> {
+            if (c.getRemainingAmount() >= 0) {
+                String phone = c.getPhoneNumber();
+                Intent sms = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + phone));
+                sms.putExtra("sms_body", "You owe: " + c.getRemainingAmount() + " PKR");
+                context.startActivity(sms);
+            } else {
+                Intent jazz = context.getPackageManager()
+                        .getLaunchIntentForPackage("com.techlogix.mobilinkcustomer");
+                if (jazz != null) context.startActivity(jazz);
+                else new AlertDialog.Builder(context)
+                        .setTitle(R.string.jazzcash_not_installed)
+                        .setMessage(R.string.install_jazzcash_prompt)
+                        .setPositiveButton(android.R.string.ok, null)
+                        .show();
+            }
+        });
+
+        holder.itemView.setOnClickListener(v ->
+                parentActivity.onItemClicked(pos)
+        );
+
+        holder.itemView.setOnLongClickListener(v -> {
+            showUpdateDeleteDialog(c, pos);
+            return true;
+        });
     }
 
     private void showUpdateDeleteDialog(Customer customer, int pos) {

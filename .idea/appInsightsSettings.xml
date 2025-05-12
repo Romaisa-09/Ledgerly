@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.example.ledgerly" />
+                  <option name="mobileSdkAppId" value="1:567627608414:android:9306c03017a754a2681fcf" />
+                  <option name="projectId" value="ledgerly-smd-project" />
+                  <option name="projectNumber" value="567627608414" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

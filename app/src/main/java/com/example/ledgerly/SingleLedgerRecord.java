@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class SingleLedgerRecord extends AppCompatActivity
-        implements LedgerlyTransactionAdapter.ItemSelected {
+        implements TransactionAdapter.ItemSelected {
 
     private static final int STORAGE_PERMISSION_CODE = 100;
     private static final String SHARED_PREFS = "com.example.ledgerly.shared_prefs";
@@ -33,7 +33,7 @@ public class SingleLedgerRecord extends AppCompatActivity
 
     private RecyclerView rvTransactions;
     private LinearLayoutManager layoutManager;
-    private LedgerlyTransactionAdapter adapter;
+    private TransactionAdapter adapter;
     private ArrayList<Transaction> transactions;
     private String startDate, endDate;
 
@@ -79,7 +79,7 @@ public class SingleLedgerRecord extends AppCompatActivity
         db.close();
 
         SharedPreferences prefs = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        adapter = new LedgerlyTransactionAdapter(this, transactions, prefs, customerId);
+        adapter = new TransactionAdapter(this, transactions, prefs, customerId);
         rvTransactions.setAdapter(adapter);
     }
 
@@ -111,7 +111,8 @@ public class SingleLedgerRecord extends AppCompatActivity
                 .putExtra("customer_user_id", customerId)
                 .putExtra("customer_name", customerName)
                 .putExtra("selected_currency", selectedCurrency)
-                .putExtra("transaction_id", tx.getTid())
+                .putExtra("transaction_id", tx.getTransactionId()
+                )
         );
         finish();
     }

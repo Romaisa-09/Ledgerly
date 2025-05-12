@@ -21,10 +21,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SendTransaction extends AppCompatActivity {
+public class ReceiveTransaction extends AppCompatActivity {
     private static final int SMS_PERMISSION_REQUEST = 1001;
 
-    private Button btnBack, btnSend;
+    private Button btnBack, btnReceive;
     private EditText etName, etAmount;
     private int vendorId, customerId;
     private String customerName, selectedCurrency;
@@ -32,14 +32,14 @@ public class SendTransaction extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_send_transaction_ledgerly);
+        setContentView(R.layout.activity_receive_transaction_ledgerly);
 
         ensureSmsPermission();
 
-        btnBack   = findViewById(R.id.btnBackSendTransaction);
-        btnSend   = findViewById(R.id.btnSendTransaction);
-        etName    = findViewById(R.id.etNameSendTransaction);
-        etAmount  = findViewById(R.id.etAmountSendTransaction);
+        btnBack    = findViewById(R.id.btnBackReceiveTransaction);
+        btnReceive = findViewById(R.id.btnReceiveTransaction);
+        etName     = findViewById(R.id.etNameReceiveTransaction);
+        etAmount   = findViewById(R.id.etAmountReceiveTransaction);
 
         vendorId         = getIntent().getIntExtra("user_id", -1);
         customerId       = getIntent().getIntExtra("customer_user_id", -1);
@@ -48,7 +48,7 @@ public class SendTransaction extends AppCompatActivity {
 
         btnBack.setOnClickListener(v -> finish());
 
-        btnSend.setOnClickListener(v -> {
+        btnReceive.setOnClickListener(v -> {
             String name   = etName.getText().toString().trim();
             String amount = etAmount.getText().toString().trim();
             if (name.isEmpty()) {
@@ -66,23 +66,21 @@ public class SendTransaction extends AppCompatActivity {
                 return;
             }
 
-            // 1) write to SQLite + Realtime DB
             recordTransaction(name, Integer.parseInt(inRupees));
+            adjustCustomerBalance(- Integer.parseInt(inRupees));
 
-            // 2) update local balance
-            adjustCustomerBalance(+ Integer.parseInt(inRupees));
-
-            // 3) fetch phone and send SMS
             DatabaseHelperCustomer dbc = new DatabaseHelperCustomer(this);
             dbc.open();
             String phone = dbc.getPhoneNumber(customerId);
             dbc.close();
             if (phone != null) {
-                String sms = getString(R.string.sms_template, name, amount, selectedCurrency);
+                String sms = getString(
+                        R.string.sms_template_receive,
+                        name, amount, selectedCurrency
+                );
                 sendSms(phone, sms);
             }
 
-            // 4) go back
             startActivity(new Intent(this, SingleLedgerRecord.class)
                     .putExtra("user_id", vendorId)
                     .putExtra("customer_user_id", customerId)
@@ -96,13 +94,11 @@ public class SendTransaction extends AppCompatActivity {
         String date = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
         String time = new SimpleDateFormat("HH:mm:ss").format(new Date());
 
-        // write to SQLite
         DatabaseHelperTransaction dbt = new DatabaseHelperTransaction(this);
         dbt.open();
-        dbt.insertTransaction(vendorId, customerId, name, date, time, 1, 0, amt);
+        dbt.insertTransaction(vendorId, customerId, name, date, time, 0, 1, amt);
         dbt.close();
 
-        // write to Realtime DB
         DatabaseReference ref = FirebaseDatabase
                 .getInstance()
                 .getReference("Transaction_Table")
@@ -114,8 +110,8 @@ public class SendTransaction extends AppCompatActivity {
         tx.put("_name",       name);
         tx.put("_date",       date);
         tx.put("_time",       time);
-        tx.put("_send",       1);
-        tx.put("_receive",    0);
+        tx.put("_send",       0);
+        tx.put("_receive",    1);
         tx.put("_amount",     amt);
 
         ref.setValue(tx)

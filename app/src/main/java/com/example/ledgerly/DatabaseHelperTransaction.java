@@ -60,8 +60,11 @@ public class DatabaseHelperTransaction {
 
         long row = database.insert(TABLE_NAME, null, cv);
         Toast.makeText(context,
-                row == -1 ? "Transaction not inserted" : "Transaction added (ID=" + row + ")",
-                Toast.LENGTH_SHORT).show();
+                        row == -1
+                                ? "Transaction not inserted"
+                                : "Transaction added (ID=" + row + ")",
+                        Toast.LENGTH_SHORT)
+                .show();
     }
 
     public void updateTransaction(int id, String name, int amount) {
@@ -73,8 +76,11 @@ public class DatabaseHelperTransaction {
                 TABLE_NAME, cv, KEY_ID + "=?", new String[]{ String.valueOf(id) }
         );
         Toast.makeText(context,
-                count > 0 ? "Transaction updated" : "Transaction update failed",
-                Toast.LENGTH_SHORT).show();
+                        count > 0
+                                ? "Transaction updated"
+                                : "Transaction update failed",
+                        Toast.LENGTH_SHORT)
+                .show();
     }
 
     public void deleteTransaction(int id) {
@@ -82,8 +88,11 @@ public class DatabaseHelperTransaction {
                 TABLE_NAME, KEY_ID + "=?", new String[]{ String.valueOf(id) }
         );
         Toast.makeText(context,
-                count > 0 ? "Transaction deleted" : "Transaction delete failed",
-                Toast.LENGTH_SHORT).show();
+                        count > 0
+                                ? "Transaction deleted"
+                                : "Transaction delete failed",
+                        Toast.LENGTH_SHORT)
+                .show();
     }
 
     public ArrayList<Transaction> readAllTransactions(int customerId) {
@@ -92,18 +101,30 @@ public class DatabaseHelperTransaction {
                 "SELECT * FROM " + TABLE_NAME + " WHERE " + KEY_CUSTOMER_ID + "=?",
                 new String[]{ String.valueOf(customerId) }
         );
+
         if (cursor.moveToFirst()) {
+            // getColumnIndexOrThrow will throw if we mistype a column name
+            int idxVendor  = cursor.getColumnIndexOrThrow(KEY_VENDOR_ID);
+            int idxCust    = cursor.getColumnIndexOrThrow(KEY_CUSTOMER_ID);
+            int idxId      = cursor.getColumnIndexOrThrow(KEY_ID);
+            int idxName    = cursor.getColumnIndexOrThrow(KEY_NAME);
+            int idxDate    = cursor.getColumnIndexOrThrow(KEY_DATE);
+            int idxTime    = cursor.getColumnIndexOrThrow(KEY_TIME);
+            int idxSend    = cursor.getColumnIndexOrThrow(KEY_SEND);
+            int idxReceive = cursor.getColumnIndexOrThrow(KEY_RECEIVE);
+            int idxAmount  = cursor.getColumnIndexOrThrow(KEY_AMOUNT);
+
             do {
                 Transaction t = new Transaction(
-                        cursor.getInt(cursor.getColumnIndex(KEY_VENDOR_ID)),
-                        cursor.getInt(cursor.getColumnIndex(KEY_CUSTOMER_ID)),
-                        cursor.getInt(cursor.getColumnIndex(KEY_ID)),
-                        cursor.getString(cursor.getColumnIndex(KEY_NAME)),
-                        cursor.getString(cursor.getColumnIndex(KEY_DATE)),
-                        cursor.getString(cursor.getColumnIndex(KEY_TIME)),
-                        cursor.getInt(cursor.getColumnIndex(KEY_SEND)),
-                        cursor.getInt(cursor.getColumnIndex(KEY_RECEIVE)),
-                        cursor.getInt(cursor.getColumnIndex(KEY_AMOUNT))
+                        cursor.getInt(idxVendor),
+                        cursor.getInt(idxCust),
+                        cursor.getInt(idxId),
+                        cursor.getString(idxName),
+                        cursor.getString(idxDate),
+                        cursor.getString(idxTime),
+                        cursor.getInt(idxSend),
+                        cursor.getInt(idxReceive),
+                        cursor.getInt(idxAmount)
                 );
                 list.add(t);
             } while (cursor.moveToNext());
@@ -131,7 +152,8 @@ public class DatabaseHelperTransaction {
                 new String[]{ String.valueOf(transactionId) }
         );
         if (c.moveToFirst()) {
-            name = c.getString(c.getColumnIndex(KEY_NAME));
+            int idx = c.getColumnIndexOrThrow(KEY_NAME);
+            name = c.getString(idx);
         }
         c.close();
         return name;
@@ -144,44 +166,18 @@ public class DatabaseHelperTransaction {
                 new String[]{ String.valueOf(id) }
         );
         if (c.moveToFirst()) {
-            value = c.getInt(c.getColumnIndex(column));
+            int idx = c.getColumnIndexOrThrow(column);
+            value = c.getInt(idx);
         }
         c.close();
         return value;
     }
 
-    public ArrayList<Transaction> readTransactionsWithinDateRange(
-            int customerId, String startDate, String endDate) {
-        ArrayList<Transaction> list = new ArrayList<>();
-        Cursor c = database.rawQuery(
-                "SELECT * FROM " + TABLE_NAME +
-                        " WHERE " + KEY_CUSTOMER_ID + "=? AND " +
-                        KEY_DATE + " BETWEEN ? AND ?",
-                new String[]{ String.valueOf(customerId), startDate, endDate }
-        );
-        if (c.moveToFirst()) {
-            do {
-                Transaction t = new Transaction(
-                        c.getInt(c.getColumnIndex(KEY_VENDOR_ID)),
-                        c.getInt(c.getColumnIndex(KEY_CUSTOMER_ID)),
-                        c.getInt(c.getColumnIndex(KEY_ID)),
-                        c.getString(c.getColumnIndex(KEY_NAME)),
-                        c.getString(c.getColumnIndex(KEY_DATE)),
-                        c.getString(c.getColumnIndex(KEY_TIME)),
-                        c.getInt(c.getColumnIndex(KEY_SEND)),
-                        c.getInt(c.getColumnIndex(KEY_RECEIVE)),
-                        c.getInt(c.getColumnIndex(KEY_AMOUNT))
-                );
-                list.add(t);
-            } while (c.moveToNext());
-        }
-        c.close();
-        return list;
-    }
-
     private static class CreateDataBase extends SQLiteOpenHelper {
-        CreateDataBase(@Nullable Context ctx, @Nullable String name,
-                       @Nullable SQLiteDatabase.CursorFactory fac, int ver) {
+        CreateDataBase(@Nullable Context ctx,
+                       @Nullable String name,
+                       @Nullable SQLiteDatabase.CursorFactory fac,
+                       int ver) {
             super(ctx, name, fac, ver);
         }
 

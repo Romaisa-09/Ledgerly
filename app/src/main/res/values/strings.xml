@@ -30,7 +30,32 @@
     <string name="enter_amount">Enter Amount</string>
     <string name="enter_phone">Enter Phone</string>
     <string name="unknown_user">Unknown User</string>
+    <string name="delete_confirmation">Delete Confirmation</string>
+    <string name="delete_prompt">Are you sure you want to delete this customer?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="jazzcash_not_installed">JazzCash Not Installed</string>
+    <string name="install_jazzcash_prompt">Please install JazzCash to proceed.</string>
 
+    <!-- SMS / validation -->
+    <string name="invalid_amount">Invalid amount entered</string>
+    <string name="sms_template">Your transaction “%1$s” of %2$s %3$s has been recorded.</string>
+
+    <!-- used for empty-field validation -->
+    <string name="field_required">This field is required</string>
+
+    <!-- After saving to Realtime DB -->
+    <string name="tx_saved">Transaction saved</string>
+    <string name="tx_save_failed">Failed to save transaction</string>
+
+    <!-- SMS feedback -->
+    <string name="sms_sent">SMS sent</string>
+    <string name="sms_failed">SMS failed, please try again</string>
+
+    <!-- SMS template for receive -->
+    <string name="sms_template_receive">
+        Your transaction «%1$s» of %2$s %3$s has been received.
+    </string>
 
     <!-- Reports -->
     <string name="generate_pdf">Generate PDF</string>
@@ -40,6 +65,17 @@
     <!-- Dialogs -->
     <string name="update_delete_dialog">Update And Delete Dialog</string>
     <string name="update">UPDATE</string>
+    <!-- For EditTransaction dialog -->
+    <string name="confirmation">Confirmation</string>
+    <string name="cancel">Cancel</string>
+
+        <!-- existing strings... -->
+
+        <string name="label_name">Name</string>
+        <string name="label_date">Date</string>
+        <string name="label_time">Time</string>
+        <string name="label_amount">Amount</string>
+
 
     <!-- Currency -->
     <string-array name="currency_options">
@@ -48,4 +84,5 @@
         <item>Riyal</item>
         <item>Yen</item>
     </string-array>
+
 </resources>

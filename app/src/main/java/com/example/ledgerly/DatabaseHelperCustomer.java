@@ -96,15 +96,18 @@ public class DatabaseHelperCustomer {
 
         if (cursor.moveToFirst()) {
             do {
+                // inside readAllCustomers loop:
                 Customer c = new Customer();
                 c.setVid(cursor.getInt(cursor.getColumnIndex(KEY_VENDOR_ID)));
                 c.setCid(cursor.getInt(cursor.getColumnIndex(KEY_ID)));
                 c.setName(cursor.getString(cursor.getColumnIndex(KEY_NAME)));
                 c.setDate(cursor.getString(cursor.getColumnIndex(KEY_DATE)));
                 c.setTime(cursor.getString(cursor.getColumnIndex(KEY_TIME)));
-                c.setRemaining_amount(cursor.getInt(cursor.getColumnIndex(KEY_REMAINING_AMOUNT)));
-                c.setPhone_number(cursor.getString(cursor.getColumnIndex(KEY_PHONE_NUMBER)));
+// fix these two:
+                c.setRemainingAmount(cursor.getInt(cursor.getColumnIndex(KEY_REMAINING_AMOUNT)));
+                c.setPhoneNumber(cursor.getString(cursor.getColumnIndex(KEY_PHONE_NUMBER)));
                 list.add(c);
+
             } while (cursor.moveToNext());
         }
         cursor.close();
