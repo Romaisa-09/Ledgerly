@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
@@ -17,20 +19,22 @@
             android:id="@+id/ictransaction"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:src="@drawable/ic_ledger_icon"
-            android:tint="@color/ledgerly_primary"/>
+            android:src="@drawable/ledgerly_logo"
+            app:tint="@color/ledgerly_primary" />
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingStart="12dp">
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp">
 
             <TextView
                 android:id="@+id/tvNameTransaction"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/label_name"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="@color/ledgerly_primary"/>
@@ -39,12 +43,14 @@
                 android:id="@+id/tvDateTransaction"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/label_date"
                 android:textColor="@color/ledgerly_secondary"/>
 
             <TextView
                 android:id="@+id/tvTimeTransaction"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/label_time"
                 android:textColor="@color/ledgerly_secondary"/>
         </LinearLayout>
 
@@ -58,19 +64,24 @@
                 android:id="@+id/tvAmountTransaction"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/label_amount"
                 android:textSize="14sp"
                 android:textStyle="italic"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:textColor="@color/ledgerly_primary" />
 
             <Button
                 android:id="@+id/btnSendReceiveTransaction"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
+                android:layout_marginTop="8dp"
+                android:minWidth="52dp"
+                android:minHeight="52dp"
+                android:padding="12dp"
                 android:text="@string/request"
-                android:backgroundTint="@color/ledgerly_primary"
-                android:textColor="@color/white"
-                android:textSize="12sp"/>
+                android:textSize="12sp"
+                android:backgroundTint="@color/ledgerly_secondary"
+                android:textColor="@color/white" />
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
